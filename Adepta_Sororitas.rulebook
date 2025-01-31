@@ -1,22 +1,168 @@
 {
   "name": "Adepta Sororitas",
-  "revision": "10.12.2",
+  "revision": "10.12.4",
   "game": "Warhammer 40k",
   "genre": "sci-fi",
   "publisher": "Games Workshop",
   "url": "https://warhammer40000.com",
   "notes": "This rulebook is provided for the purposes of testing Rosterizer and is not intended for distribution. Data load provided by [Game-Datacards](https://game-datacards.eu)",
-  "wip": false,
+  "wip": true,
   "dependencies": [
     {
-      "slug": "9ACQCX",
+      "slug": "XKYMS8",
       "name": "Imperium",
       "game": "Warhammer 40k",
       "source": "https://raw.githubusercontent.com/RosterizerTestData/Warhammer40k10e/main/Imperium.rulebook"
     }
   ],
   "rulebook": {
-    "assetTaxonomy": {},
+    "assetTaxonomy": {
+      "Agendas": {},
+      "Character": {
+        "rules": {
+          "showSaintPotentia": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Saint Potentia",
+                    "visibility"
+                  ]
+                ],
+                "value": "active"
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Play",
+                    "value"
+                  ]
+                ],
+                "value": "Narrative"
+              }
+            ],
+            "evaluate": "AND",
+            "failState": "pass"
+          },
+          "useCrusadeSaint": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    [
+                      "Saint Points accruded",
+                      "Martyr Points accruded"
+                    ],
+                    "visibility"
+                  ]
+                ],
+                "value": "normal"
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Play",
+                    "value"
+                  ]
+                ],
+                "value": "Narrative"
+              },
+              {
+                "actionable": true,
+                "min": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "tracked",
+                    "saintPotentia"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "AND",
+            "failState": "pass"
+          }
+        },
+        "stats": {
+          "Martyr Points accruded": {
+            "increment": {
+              "value": 1
+            },
+            "label": "Martyr Points",
+            "min": 0,
+            "statType": "numeric",
+            "tracked": true,
+            "value": 0,
+            "visibility": "hidden"
+          },
+          "Saint Points accruded": {
+            "increment": {
+              "value": 1
+            },
+            "label": "Saint Points",
+            "min": 0,
+            "statType": "numeric",
+            "tracked": true,
+            "value": 0,
+            "visibility": "hidden"
+          },
+          "Saint Potentia": {
+            "dynamic": true,
+            "ranks": {
+              "-": {
+                "order": 0
+              },
+              "✓": {
+                "order": 1,
+                "tracking": {
+                  "saintPotentia": 1
+                }
+              }
+            },
+            "statType": "rank",
+            "tracked": true,
+            "value": "-",
+            "visibility": "hidden"
+          }
+        }
+      },
+      "Crusade Relic": {
+        "keywords": {
+          "Keywords": []
+        }
+      },
+      "Trails of a Living Saint": {
+        "keywords": {
+          "Keywords": [
+            "Saint Potentia"
+          ]
+        }
+      }
+    },
     "assetCatalog": {
       "Ability§Abbess Sanctorum": {
         "keywords": {
@@ -57,6 +203,22 @@
           ]
         },
         "text": "While this unit is leading a unit and contains an Aestred Thurga model, weapons equipped by models in that unit have the [Devastating Wounds] ability."
+      },
+      "Ability§Beacon of Divine Grace": {
+        "aspects": {
+          "Label": "Beacon of Divine Grace"
+        },
+        "keywords": {
+          "Keywords": [
+            "Trails of a Living Saint"
+          ]
+        },
+        "stats": {
+          "abilityName": {
+            "value": "Beacon of Divine Grace"
+          }
+        },
+        "text": "Gain 2 Saint points at the end of a battle if this model performed 3 or more Acts of Faith during that battle.\nMiraculous Feat: Gain 1 Saint point at the end of a battle for each Miracle dice remaining in your Miracle Dice pool (to a maximum of 2 Saint points)."
       },
       "Ability§Cherub": {
         "keywords": {
@@ -532,6 +694,176 @@
           ]
         },
         "text": "Once per battle, in the Fight phase, this model can use this ability. If it does, until the end of the phase, improve the Strength and Attacks characteristics of melee weapons equipped by this model by 3."
+      },
+      "Agendas§Atonement in Battle": {
+        "text": "When you select this Agenda, select up to three ADEPTA SORORITAS units from your Crusade army; each unit selected must either be PENITENT or have one of the following Battle Scars: Fatigued, Disgraced, Mark of Shame or Battle-weary (see Battle Scars). At the end of the battle, each of those units that destroyed one or more enemy units gains 3XP, loses one of the aforementioned Battle Scars of your choice (if applicable) and, if it is a REPENTIA SOUAD unit, gains 1 Redemption point (see the Glorious Redemption Requisition). Make a note on a unit’s Crusade card each time it gains a Redemption point."
+      },
+      "Agendas§Defend the Shrine": {
+        "text": "If you select this Agenda, after both sides have finished deploying, your opponent must select one objective marker that is not in their deployment zone to be the Sacred Shrine objective marker. At the end of each of your turns, if you control that Sacred Shrine objective marker, you can select one ADEPTA SORORITAS unit from your Crusade army that is within range of it; that unit gains 1XP.\nAt the end of the battle:\n- If you do not control that Sacred Shrine objective marker, you do not receive the 1 Requisition point you would normally receive in the Update Order of Battle step.\n- If you control that Sacred Shrine objective marker, you can select one ADEPTA SORORITAS model within range of it (excluding EPIC HEROES); that model gains either 1 Weapon Modifications, 1 Crusade Relic (CHARACTER models only) or 3 Saint points (SAINT POTENTIA models only)."
+      },
+      "Agendas§Pious Purgation": {
+        "text": "Each time an ADEPTA SORORITAS unit from your Crusade army is selected to shoot or fight, if one or more enemy units are destroyed as a result of those attacks, that unit gains 1XP. While resolving those attacks, if one or more PSYKER models are destroyed, that unit gains an additional 1XP, and if one or more enemy models are destroyed by an attack made with a Torrent or Melta weapon, that unit gains an additional 1XP. A unit cannot gain more than 3XP from this Agenda during the battle. If a SAINT POTENTIA model gains any XP as a result of this Agenda, that model also gains 1 Saint point."
+      },
+      "Agendas§Test of Faith": {
+        "text": "Each time a unit performs an Act of Faith, you can discard 1 additional Miracle dice. If you do, place that dice on that unit’s Crusade card. Each time a unit from your Crusade army fails a Battle-shock test, remove all Miracle dice placed on that unit’s Crusade card. At the end of the battle, each unit from your Crusade army gains 1XP for each Miracle dice on its Crusade card (to a maximum of 3XP). If a SAINT POTENTIA model gains any XP as the result of this Agenda, it also gains 1 Saint point."
+      },
+      "Battle Trait§Aegis of Belief": {
+        "constraints": {
+          "any": [
+            "Character"
+          ]
+        },
+        "text": "This model has the Feel No Pain 5+ ability and, at the start of your Command phase, this model regains 1 lost wound."
+      },
+      "Battle Trait§Armour of Faith": {
+        "constraints": {
+          "any": [
+            "Infantry",
+            "Paragon Warsuits"
+          ]
+        },
+        "keywords": {
+          "Keywords": []
+        },
+        "text": "Once per phase, when this unit is selected as the target of an attack, you can discard 1 Miracle dice. If you do, until the end of the phase, each time an attack targets this unit, worsen the Armour Penetration characteristic of that attack by 1."
+      },
+      "Battle Trait§Beacon of Faith": {
+        "constraints": {
+          "any": [
+            "Character"
+          ]
+        },
+        "text": "At the end of your Command phase, if this model is your WARLORD and is on the battlefield, you can spend lCP. If you do, you gain D3 Miracle dice."
+      },
+      "Battle Trait§Blood Begets Absolution": {
+        "constraints": {
+          "any": [
+            "Penitent"
+          ]
+        },
+        "text": "Each time this unit destroys an enemy unit in the Fight phase, you gain 1 Miracle dice."
+      },
+      "Battle Trait§Deeds, Not Words": {
+        "constraints": {
+          "any": [
+            "Character"
+          ]
+        },
+        "text": "Each time this model makes an attack, you can re-roll the Hit roll and you can re-roll the Wound roll."
+      },
+      "Battle Trait§Exemplars of the Order": {
+        "constraints": {
+          "any": [
+            "Infantry",
+            "Paragon Warsuits"
+          ]
+        },
+        "keywords": {
+          "Keywords": []
+        },
+        "text": "This unit can perform 1 additional Act of Faith per phase."
+      },
+      "Battle Trait§Faithful Devotee": {
+        "constraints": {
+          "any": [
+            "Penitent"
+          ]
+        },
+        "text": "Each time this unit is selected as the target of an attack, if this unit is Below Half-strength, models in this unit have the Feel No Pain 4+ ability against that attack."
+      },
+      "Battle Trait§Mobile Shrine (Aura)": {
+        "constraints": {
+          "any": [
+            "Vehicle"
+          ],
+          "none": [
+            "Walker",
+            "Vehicle—Walker"
+          ]
+        },
+        "text": "While a friendly ADEPTA SORORITAS unit is within 6\" of this unit, improve that unit’s Leadership characteristic by 1."
+      },
+      "Battle Trait§Pious Machine Spirit": {
+        "constraints": {
+          "any": [
+            "Vehicle"
+          ],
+          "none": [
+            "Vehicle—Walker",
+            "Walker"
+          ]
+        },
+        "text": "Each time this unit performs an Act of Faith, the result of one of the Miracle dice used in that Act of Faith is first improved by 1 (to a maximum of 6)."
+      },
+      "Battle Trait§Pure of Soul": {
+        "allowed": {
+          "items": []
+        },
+        "constraints": {
+          "any": [
+            "Infantry",
+            "Paragon Warsuits"
+          ]
+        },
+        "keywords": {
+          "Keywords": []
+        }
+      },
+      "Battle Trait§Thrice-Blessed Hull": {
+        "constraints": {
+          "any": [
+            "Vehicle"
+          ],
+          "none": [
+            "Vehicle—Walker",
+            "Walker"
+          ]
+        },
+        "text": "This unit has the Feel No Pain 4+ ability against mortal wounds."
+      },
+      "Battle Trait§Unquenchable Fanaticism": {
+        "constraints": {
+          "any": [
+            "Penitent"
+          ]
+        },
+        "text": "Add 1 to Advance and Charge rolls made for this unit."
+      },
+      "Battle Trait§Valour of Saints": {
+        "constraints": {
+          "any": [
+            "Infantry",
+            "Paragon Warsuits"
+          ]
+        },
+        "keywords": {
+          "Keywords": []
+        },
+        "text": "Each time this unit takes a Battle-shock or Leadership test, you can first discard 1 Miracle dice. If you do, that test is automatically passed."
+      },
+      "Battle Trait§Veterans of the Convent": {
+        "constraints": {
+          "any": [
+            "Infantry",
+            "Paragon Warsuits"
+          ]
+        },
+        "keywords": {
+          "Keywords": []
+        },
+        "text": "You can re-roll failed Out of Action tests taken for this unit, and each time this unit is Marked for Greatness, it gains an additional 2XP."
+      },
+      "Battle Trait§Zealous Devotion": {
+        "constraints": {
+          "any": [
+            "Infantry",
+            "Paragon Warsuits"
+          ]
+        },
+        "keywords": {
+          "Keywords": []
+        },
+        "text": "Each time this unit makes a Charge move, until the end of the turn, improve the Weapon Skill characteristic of melee weapons equipped by models in this unit by 1."
       },
       "Character§Aestred Thurga and Agathae Dolan": {
         "aspects": {
@@ -1135,7 +1467,7 @@
           "traits": [
             {
               "item": "Ability§Leader",
-              "text": "This model can be attached to the following units:\n\n* Battle Sisters Squad\n\n* Celestian Sacresants\n\n* Dominion Squad\n\n* Retributor Squad\n\n* Sisters Novitiate Squad \n\n* Crusaders\n\nThis model can be attached to a BATTLE SISTERS SQUAD, even if one CANONESS, PALATINE, JUNITH ERUITA or AESTRED THURGA model has already been attached to it. If you do, and that Bodyguard unit is destroyed, the Leader units attached to it become separate units, with their original Starting Strengths."
+              "text": "This model can be attached to the following units:\n\n* Battle Sisters Squad\n\n* Celestian Sacresants\n\n* Dominion Squad\n\n* Retributor Squad\n\n* Sisters Novitiate Squad \n\nThis model can be attached to a Battle Sisters Squad, even if one Canoness, Palatine or Junith Eruita model has already been attached to it. If you do, and that Bodyguard unit is destroyed, the Leader units attached to it become separate units, with their original Starting Strengths."
             },
             "Ability§Acts of Faith",
             "Ability§Laud Hailer",
@@ -1247,12 +1579,28 @@
                   [
                     "{this}",
                     "evals",
-                    [
-                      "0",
-                      "1",
-                      "2",
-                      "3"
-                    ],
+                    "0",
+                    "result",
+                    "truthy"
+                  ],
+                  [
+                    "{this}",
+                    "evals",
+                    "1",
+                    "result",
+                    "truthy"
+                  ],
+                  [
+                    "{this}",
+                    "evals",
+                    "2",
+                    "result",
+                    "truthy"
+                  ],
+                  [
+                    "{this}",
+                    "evals",
+                    "3",
                     "result",
                     "truthy"
                   ]
@@ -1307,7 +1655,7 @@
           "traits": [
             {
               "item": "Ability§Leader",
-              "text": "This model can be attached to the following units:\n\n* Battle Sisters Squad\n\n* Celestian Sacresants\n\n* Dominion Squad\n\n* Retributor Squad \n\n* Crusaders\n\nThis model can be attached to a BATTLE SISTERS SQUAD, even if one CANONESS, PALATINE, JUNITH ERUITA or AESTRED THURGA model has already been attached to it. If you do, and that Bodyguard unit is destroyed, the Leader units attached to it become separate units, with their original Starting Strengths."
+              "text": "This model can be attached to the following units:\n\n* Battle Sisters Squad\n\n* Celestian Sacresants\n\n* Dominion Squad\n\n* Retributor Squad \n\nThis model can be attached to a Battle Sisters Squad, even if one Canoness, Palatine or Junith Eruita model has already been attached to it. If you do, and that Bodyguard unit is destroyed, the Leader units attached to it become separate units, with their original Starting Strengths."
             },
             "Ability§Acts of Faith",
             "Ability§Executioner of Heretics (aura)",
@@ -1342,115 +1690,6 @@
             "Character"
           ]
         },
-        "rules": {
-          "allowTwoleaders": {
-            "actions": [
-              {
-                "actionType": "set",
-                "iterations": 1,
-                "paths": [
-                  [
-                    "{parent}",
-                    "stats",
-                    "Leader",
-                    "max"
-                  ]
-                ],
-                "value": 2
-              }
-            ],
-            "evals": [
-              {
-                "actionable": false,
-                "min": 1,
-                "not": false,
-                "operator": "AND",
-                "paths": [
-                  [
-                    "{parent}",
-                    "tally",
-                    "Canoness"
-                  ]
-                ]
-              },
-              {
-                "actionable": false,
-                "min": 1,
-                "not": false,
-                "operator": "AND",
-                "paths": [
-                  [
-                    "{parent}",
-                    "tally",
-                    "Palatine"
-                  ]
-                ]
-              },
-              {
-                "actionable": false,
-                "min": 1,
-                "not": false,
-                "operator": "AND",
-                "paths": [
-                  [
-                    "{parent}",
-                    "tally",
-                    "Junith Eruita"
-                  ]
-                ]
-              },
-              {
-                "actionable": false,
-                "min": 1,
-                "not": false,
-                "operator": "AND",
-                "paths": [
-                  [
-                    "{parent}",
-                    "tally",
-                    "Aestred Thurga and Agathae Dolan"
-                  ]
-                ]
-              },
-              {
-                "actionable": true,
-                "not": false,
-                "operator": "OR",
-                "paths": [
-                  [
-                    "{this}",
-                    "evals",
-                    [
-                      "0",
-                      "1",
-                      "2",
-                      "3"
-                    ],
-                    "result",
-                    "truthy"
-                  ]
-                ],
-                "value": true
-              },
-              {
-                "actionable": true,
-                "contains": true,
-                "not": false,
-                "operator": "AND",
-                "paths": [
-                  [
-                    "{parent}",
-                    "keywords",
-                    "Keywords"
-                  ]
-                ],
-                "value": "Battle Sisters Squad"
-              }
-            ],
-            "evaluate": "AND",
-            "failState": "pass"
-          }
-        },
         "stats": {
           "Ld": {
             "value": 6
@@ -1480,7 +1719,7 @@
           "traits": [
             {
               "item": "Ability§Leader",
-              "text": "This model can be attached to the following units:\n\n* Battle Sisters Squad\n\n* Celestian Sacresants\n\n* Dominion Squad\n\n* Retributor Squad\n\n* Sisters Novitiate Squad \n\n* Crusaders\n\nThis model can be attached to a BATTLE SISTERS SQUAD, even if one CANONESS, PALATINE, JUNITH ERUITA or AESTRED THURGA model has already been attached to it. If you do, and that Bodyguard unit is destroyed, the Leader units attached to it become separate units, with their original Starting Strengths."
+              "text": "This model can be attached to the following units:\n\n* Battle Sisters Squad\n\n* Celestian Sacresants\n\n* Dominion Squad\n\n* Retributor Squad\n\n* Sisters Novitiate Squad \n\nThis model can be attached to a Battle Sisters Squad, even if one Canoness, Palatine or Junith Eruita model has already been attached to it. If you do, and that Bodyguard unit is destroyed, the Leader units attached to it become separate units, with their original Starting Strengths."
             },
             "Ability§Acts of Faith",
             "Ability§Medicus Ministorum",
@@ -1533,7 +1772,7 @@
             ],
             "evals": [
               {
-                "actionable": false,
+                "actionable": true,
                 "min": 1,
                 "not": false,
                 "operator": "AND",
@@ -1546,7 +1785,7 @@
                 ]
               },
               {
-                "actionable": false,
+                "actionable": true,
                 "min": 1,
                 "not": false,
                 "operator": "AND",
@@ -1559,7 +1798,7 @@
                 ]
               },
               {
-                "actionable": false,
+                "actionable": true,
                 "min": 1,
                 "not": false,
                 "operator": "AND",
@@ -1570,56 +1809,9 @@
                     "Junith Eruita"
                   ]
                 ]
-              },
-              {
-                "actionable": false,
-                "min": 1,
-                "not": false,
-                "operator": "AND",
-                "paths": [
-                  [
-                    "{parent}",
-                    "tally",
-                    "Aestred Thurga and Agathae Dolan"
-                  ]
-                ]
-              },
-              {
-                "actionable": true,
-                "not": false,
-                "operator": "OR",
-                "paths": [
-                  [
-                    "{this}",
-                    "evals",
-                    [
-                      "0",
-                      "1",
-                      "2",
-                      "3"
-                    ],
-                    "result",
-                    "truthy"
-                  ]
-                ],
-                "value": true
-              },
-              {
-                "actionable": true,
-                "contains": true,
-                "not": false,
-                "operator": "AND",
-                "paths": [
-                  [
-                    "{parent}",
-                    "keywords",
-                    "Keywords"
-                  ]
-                ],
-                "value": "Battle Sisters Squad"
               }
             ],
-            "evaluate": "AND",
+            "evaluate": "OR",
             "failState": "pass"
           }
         },
@@ -1652,7 +1844,7 @@
           "traits": [
             {
               "item": "Ability§Leader",
-              "text": "This model can be attached to the following units:\n\n* Battle Sisters Squad\n\n* Celestian Sacresants\n\n* Dominion Squad\n\n* Retributor Squad \n\n* Crusaders\n\nThis model can be attached to a BATTLE SISTERS SQUAD, even if one CANONESS, PALATINE, JUNITH ERUITA or AESTRED THURGA model has already been attached to it. If you do, and that Bodyguard unit is destroyed, the Leader units attached to it become separate units, with their original Starting Strengths."
+              "text": "This model can be attached to the following units:\n\n* Battle Sisters Squad\n\n* Celestian Sacresants\n\n* Dominion Squad\n\n* Retributor Squad \n\nThis model can be attached to a Battle Sisters Squad, even if one Canoness, Palatine or Junith Eruita model has already been attached to it. If you do, and that Bodyguard unit is destroyed, the Leader units attached to it become separate units, with their original Starting Strengths."
             },
             "Ability§Acts of Faith",
             "Ability§Litany of Deeds",
@@ -1707,7 +1899,7 @@
             ],
             "evals": [
               {
-                "actionable": false,
+                "actionable": true,
                 "min": 1,
                 "not": false,
                 "operator": "AND",
@@ -1720,7 +1912,7 @@
                 ]
               },
               {
-                "actionable": false,
+                "actionable": true,
                 "min": 1,
                 "not": false,
                 "operator": "AND",
@@ -1733,7 +1925,7 @@
                 ]
               },
               {
-                "actionable": false,
+                "actionable": true,
                 "min": 1,
                 "not": false,
                 "operator": "AND",
@@ -1744,56 +1936,9 @@
                     "Junith Eruita"
                   ]
                 ]
-              },
-              {
-                "actionable": false,
-                "min": 1,
-                "not": false,
-                "operator": "AND",
-                "paths": [
-                  [
-                    "{parent}",
-                    "tally",
-                    "Aestred Thurga and Agathae Dolan"
-                  ]
-                ]
-              },
-              {
-                "actionable": true,
-                "not": false,
-                "operator": "OR",
-                "paths": [
-                  [
-                    "{this}",
-                    "evals",
-                    [
-                      "0",
-                      "1",
-                      "2",
-                      "3"
-                    ],
-                    "result",
-                    "truthy"
-                  ]
-                ],
-                "value": true
-              },
-              {
-                "actionable": true,
-                "contains": true,
-                "not": false,
-                "operator": "AND",
-                "paths": [
-                  [
-                    "{parent}",
-                    "keywords",
-                    "Keywords"
-                  ]
-                ],
-                "value": "Battle Sisters Squad"
               }
             ],
-            "evaluate": "AND",
+            "evaluate": "OR",
             "failState": "pass"
           }
         },
@@ -2318,6 +2463,75 @@
             "value": 18
           }
         }
+      },
+      "Crusade Relic§Battle-Psalms of Vespania": {
+        "keywords": {
+          "Keywords": [
+            "Antiquity Relic"
+          ]
+        },
+        "text": "When selecting Agendas for a battle, you can select one ADEPTA SORORITAS Agenda to be used in that battle in addition to any others being used in that battle."
+      },
+      "Crusade Relic§Blessings of Sebastian Thor": {
+        "keywords": {
+          "Keywords": [
+            "Antiquity Relic"
+          ]
+        },
+        "text": "If the bearer is in your Crusade army, you can use one Crusade Blessing even if you are not the Underdog."
+      },
+      "Crusade Relic§Icon of Sanctity": {
+        "keywords": {
+          "Keywords": [
+            "Antiquity Relic"
+          ]
+        },
+        "text": "If the bearer is in your Crusade army, you can use one Crusade Blessing even if you are not the Underdog."
+      },
+      "Crusade Relic§Phial of Dolan": {
+        "keywords": {
+          "Keywords": [
+            "Artificer Relic"
+          ]
+        },
+        "text": "Improve the bearer’s Wounds, Leadership and Objective Control characteristics by 1."
+      },
+      "Crusade Relic§Praesidium Rosarius": {
+        "keywords": {
+          "Keywords": [
+            "Artificer Relic"
+          ]
+        },
+        "text": "The bearer has a 4+ invulnerable save. Each time the bearer’s unit is selected as the target of an attack, you can discard 1 Miracle dice. If you do, until the end of the phase, the bearer has a 3+ invulnerable save."
+      },
+      "Crusade Relic§Tears of the Emperor": {
+        "keywords": {
+          "Keywords": [
+            "Artificer Relic"
+          ]
+        },
+        "text": "Improve the Attacks, Strength and Damage characteristics of the bearer’s ranged weapons by 1, and those weapons have the [DEVASTATING WOUNDS] and [ANTI-CHAOS 4+] abilities."
+      },
+      "Crusade Relic§The Sigil Ecclesiasticus": {
+        "constraints": {
+          "any": [
+            "Saint Potentia"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Artificer Relic"
+          ]
+        },
+        "text": "SAINT POTENTIA model only. When the bearer is destroyed, the Miracle dice you gain as a result is automatically a 6. At the end of the battle, the bearer gains 1 Saint point (whether destroyed or not)."
+      },
+      "Crusade Relic§Weapon of the Matriach": {
+        "keywords": {
+          "Keywords": [
+            "Legendary Relic"
+          ]
+        },
+        "text": "LIVING SAINT model only. Improve the Strength and Armour Penetration characteristics of the bearer’s melee weapons by 1, and those weapons have the [ANTI-CHARACTER 4+], [DEVASTATING WOUNDS] and [PRECISION] abilities."
       },
       "Detachment§Army of Faith": {
         "rules": {
@@ -11117,6 +11331,79 @@
             "value": 8
           }
         }
+      },
+      "Requisition§Ascend to the Order": {
+        "allowed": {
+          "items": [
+            "Unit§Sisters Novitiate Squad"
+          ]
+        },
+        "stats": {
+          "RP": {
+            "value": 2
+          }
+        },
+        "text": "Purchase this Requisition before a battle. Select one SISTERS NOVITIATES SQUAD unit on your Order of Battle with the Blooded rank or higher. Remove that unit from your Order of Battle and add one BATTLE SISTERS SQUAD, DOMINION SQUAD or RETRIBUTOR SQUAD unit to your Order of Battle. The new unit has the same Battle Honours and Battle Scars as the unit it replaced, and has 5 more XP than the unit it replaced.*"
+      },
+      "Requisition§Divine Calling": {
+        "allowed": {
+          "classifications": []
+        },
+        "constraints": {
+          "any": [
+            "Saint Potentia"
+          ]
+        },
+        "stats": {
+          "RP": {
+            "value": 1
+          }
+        },
+        "text": "Purchase this Requisition at the end of a battle, when your SAINT POTENTIA model abandons its current Trial and starts a new one. After resetting its Saint points to 0, it gains a number of Saint points towards its new Trial equal to half the number of Saint points it had gained towards that abandoned Trial (rounding up)."
+      },
+      "Requisition§Glorious Redemption": {
+        "allowed": {
+          "items": [
+            "Unit§Repentia Squad"
+          ]
+        },
+        "stats": {
+          "RP": {
+            "value": 1
+          }
+        },
+        "text": "Purchase this Requisition before a battle. Select one REPENTIA SQUAD unit on your Order of Battle that has 3 Redemption points (see the Atonement in Battle Agenda). Remove that unit from your Order of Battle and add a SERAPHIM SQUAD, ZEPHYRIM SQUAD, CELESTIAN SACRESANTS or PARAGON WARSUITS unit to your Order of Battle. The new unit has the same Battle Honours and Battle Scars as the unit it replaced, and gains one Battle Trait of your choice (this must be a Battle Trait it can have, but does not count towards the maximum number of Battle Traits a unit can have). If the Legendary Veterans Requisition is used on this unit, that Requisition only costs you 1RP.*"
+      },
+      "Requisition§In Suffering, Enlightenment": {
+        "stats": {
+          "RP": {
+            "value": 1
+          }
+        },
+        "text": "Purchase this Requisition after a battle, before an ADEPTA SORORITAS unit from your Crusade army takes an Out of Action test. That test is automatically failed and that unit gains 1 Battle Scar and 1 Battle Honour of your choice. If that unit was a SAINT POTENTIA, it also gains 3 Saint points and 1 Martyr point. You cannot use this Requisition on the same unit more than once."
+      },
+      "Requisition§Saintly Benediction": {
+        "stats": {
+          "RP": {
+            "value": 1
+          }
+        },
+        "text": "Purchase this Requisition before a battle. During the first battle round of that battle, each of the Miracle dice you gain at the start of each player’s turn is automatically a 6."
+      },
+      "Requisition§The Penitent Path": {
+        "allowed": {
+          "items": [
+            "Unit§Battle Sisters Squad",
+            "Unit§Dominion Squad",
+            "Unit§Retributor Squad"
+          ]
+        },
+        "stats": {
+          "RP": {
+            "value": 2
+          }
+        },
+        "text": "Purchase this Requisition before a battle. Select one of the following:\n    Select one BATTLE SISTERS SQUAD, DOMINION SQUAD or RETRIBUTOR SQUAD unit on your Order of Battle that has suffered a Devastating Blow result. Remove that unit from your Order of Battle and add one REPENTIA SQUAD unit to your Order of Battle.\n    Select one REPENTIA SQUAD unit on your Order of Battle that has suffered a Devastating Blow result. Remove that unit from your Order of Battle and add one MORTIFIERS unit to your Order of Battle. \n\nIn either case, the new unit has the same Battle Honours, Battle Scars and XP as the unit it replaced, and until it is removed from your Order of Battle, it will gain 2XP from Dealers of Death, instead of just 1XP.*"
       },
       "Roster§Roster": {
         "stats": {
